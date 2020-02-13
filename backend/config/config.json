@@ -1,0 +1,13 @@
+{
+    "env" : "development",
+    "mongo": {
+        "development": {
+            "host" : "localhost",
+            "port" : "4000"
+        },
+        "production": {
+            "host": "mongo-server",
+            "port" : "4000"
+        }
+    }
+}
