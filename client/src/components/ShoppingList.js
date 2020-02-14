@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { connect } from 'react-redux';
-import { getItems, deleteItem } from '../actions/itemActions';
+import { getItems, deleteItem,updateItemDone } from '../actions/itemActions';
 import PropTypes from 'prop-types';
 
 class ShoppingList extends Component {
@@ -18,6 +18,13 @@ class ShoppingList extends Component {
 
   onUpdate = (id) => {
     console.log('update')
+  }
+  setTaskNotDone=(id)=>{
+    console.log(id)
+
+  }
+  setTaskDone=(item)=>{
+    this.props.updateItemDone(item);
   }
 
   render() {
@@ -45,6 +52,9 @@ class ShoppingList extends Component {
                   > !
                   </Button>
                   <p>
+                    ID: {item._id}
+                  </p>
+                  <p>
                     Title: {item.title}
                   </p>
                   <p>
@@ -53,12 +63,9 @@ class ShoppingList extends Component {
                   <p>
                     Date: {item.date}
                   </p>
-                  <p>
-                    State:  {item.taskStatus}
-                  </p>
-                  {/* {(item.taskStatus)? (<button onClick={() => this.props.setTaskNotDone(task._id)}>Pending</button>)
-                  : (<button onClick={() => this.props.setTaskDone(task._id)}>Done</button>)
-                } */}
+                  {(item.taskStatus)? (<Button onClick={() => this.setTaskNotDone(item._id)}>Pending</Button>)
+                  : (<Button onClick={() => this.setTaskDone(item)}>Done</Button>)
+                }
                 </ListGroupItem>
               </CSSTransition>
             ))}
@@ -73,6 +80,7 @@ class ShoppingList extends Component {
 ShoppingList.propTypes = {
   getItems: PropTypes.func.isRequired,
   deleteItem: PropTypes.func.isRequired,
+  updateItemDone: PropTypes.func.isRequired,
   item: PropTypes.object.isRequired
 }
 
@@ -82,5 +90,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { getItems, deleteItem }
+  { getItems, deleteItem, updateItemDone }
 )(ShoppingList)

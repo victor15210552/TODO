@@ -3,7 +3,8 @@ import {
     GET_ITEMS, 
     ADD_ITEMS, 
     DELETE_ITEMS, 
-    ITEMS_LOADING 
+    ITEMS_LOADING,
+    UPDATE_ITEMS
 } from '../actions/types';
 
 const URL = 'http://localhost:4000/items'
@@ -31,6 +32,14 @@ export const deleteItem = id => dispatch => {
         .then(res => dispatch({
             type: DELETE_ITEMS,
             payload: id
+        }))
+};
+
+export const updateItemDone = item => dispatch => {
+    axios.put(`${URL}/update/${item._id}`)
+        .then(res => dispatch({
+            type: UPDATE_ITEMS,
+            payload: res.data
         }))
 };
 
