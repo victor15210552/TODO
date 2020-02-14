@@ -35,36 +35,44 @@ API.delete('/items/delete/:id', (req, res) => {
         .catch(err => res.status(404).json({ sucess: false }));
 });
 
-
-API.post('/items/update', (req, res) => {
-    const {flag} = req.body;
-    const {id} = (flag==='update')?req.body.task:req.body;
-    if(flag === 'update'){
-        const {title, description} = req.body.task;
-        var toUpdate = {
-            title:title,
-            description:description
-        };
-    }else if(flag === 'notDone'){
-        var toUpdate = {
-            taskStatus:false
-        }
-    }else{
-        var toUpdate = {
-            taskStatus: true
-        };
-    }
-    tasksEntity.findByIdAndUpdate(id,toUpdate,{new:true}, function(err, result){
-        if(!err){
-            res.json({
-                message:'updated',
-                result
-            });
-        }else{
-            res.status(500);
-        }
-    });
+API.put('/items/update/:id', (req, res) => {
+    tasksEntity.findOneAndUpdate({_id: req.params.id}, req.body, {new: true}, function(err, task) {
+        if (err)
+          res.send(err);
+        res.json(task);
+      });    
 });
+
+
+// API.post('/items/update', (req, res) => {
+//     const {flag} = req.body;
+//     const {id} = (flag==='update')?req.body.task:req.body;
+//     if(flag === 'update'){
+//         const {title, description} = req.body.task;
+//         var toUpdate = {
+//             title:title,
+//             description:description
+//         };
+//     }else if(flag === 'notDone'){
+//         var toUpdate = {
+//             taskStatus:false
+//         }
+//     }else{
+//         var toUpdate = {
+//             taskStatus: true
+//         };
+//     }
+//     tasksEntity.findByIdAndUpdate(id,toUpdate,{new:true}, function(err, result){
+//         if(!err){
+//             res.json({
+//                 message:'updated',
+//                 result
+//             });
+//         }else{
+//             res.status(500);
+//         }
+//     });
+// });
 
 
 const port = process.env.PORT || 4000;
